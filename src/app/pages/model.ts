@@ -12,3 +12,13 @@ export interface Attraction {
   /** 是否加入最愛 */
   isFavorite: boolean;
 }
+
+export interface Favorite {
+  id: number;
+  name: string;
+  distric: string;
+  open_time: string;
+  tel: string;
+  isFavorite: boolean;
+  memo: string;
+}
