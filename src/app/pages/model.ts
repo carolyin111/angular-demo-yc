@@ -9,4 +9,6 @@ export interface Attraction {
   open_time: string;
   /** 電話 */
   tel: string;
+  /** 是否加入最愛 */
+  isFavorite: boolean;
 }

@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './favorites.component.html',
-  styleUrl: './favorites.component.scss'
+  styleUrl: './favorites.component.scss',
 })
-export class FavoritesComponent {
-
-}
+export class FavoritesComponent {}
