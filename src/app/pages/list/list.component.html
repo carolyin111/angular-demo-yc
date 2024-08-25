@@ -1,6 +1,21 @@
 <div class="data-list-container">
   <h1>景點資料列表</h1>
 
+  <div class="form-wrapper">
+    <form>
+      <div class="form-field">
+        <label for="categoryIds">分類編號</label>
+        <input
+          name="categoryIds"
+          type="text"
+          [(ngModel)]="categoryIds"
+          placeholder="輸入多個請以逗號分隔。例如 12,34,124"
+        />
+      </div>
+    </form>
+    <button class="yc-btn" (click)="search()">查詢</button>
+  </div>
+
   <div class="table-wrapper">
     <table class="data-list-table">
       <thead>
@@ -14,15 +29,16 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of dataList(); track item.id) {
+        @for (item of dataList(); track item.id; let i = $index) {
           <tr>
-            <td>{{ item.id }}</td>
+            <td>{{ i }}</td>
             <td>{{ item.distric }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.tel }}</td>
             <td>{{ item.open_time }}</td>
             <td>
               <input
+                class="yc-checkbox"
                 type="checkbox"
                 [checked]="item.isFavorite"
                 (change)="toggleFavorite(item)"

@@ -1,4 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { map, of, tap } from 'rxjs';
 import { mockdate } from '../mockdata';
 import { Attraction } from '../model';
@@ -6,14 +7,26 @@ import { Attraction } from '../model';
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })
 export class ListComponent implements OnInit {
   dataList = signal<Attraction[]>([]);
 
-  ngOnInit(): void {
+  categoryIds = signal<string>('');
+
+  ngOnInit(): void {}
+
+  toggleFavorite(item: Attraction) {
+    if (!item.isFavorite) {
+      item.isFavorite = true;
+    }
+  }
+
+  search() {
+    console.log(this.categoryIds());
+
     of(mockdate)
       .pipe(
         map((data) => {
@@ -26,15 +39,8 @@ export class ListComponent implements OnInit {
             isFavorite: false,
           }));
         }),
-        tap((res) => console.log(res)),
         tap((res) => this.dataList.set(res))
       )
       .subscribe();
-  }
-
-  toggleFavorite(item: Attraction) {
-    if (!item.isFavorite) {
-      item.isFavorite = true;
-    }
   }
 }
