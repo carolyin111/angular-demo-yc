@@ -1,3 +1,9 @@
+@if (isLoading()) {
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+}
+
 <div class="data-list-container">
   <h1>景點資料列表</h1>
 
@@ -50,5 +56,13 @@
         }
       </tbody>
     </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()">上一頁</button>
+    <div class="page-info">
+      <span>第 {{ currentPage() }} 頁</span>
+    </div>
+    <button (click)="nextPage()">下一頁</button>
   </div>
 </div>

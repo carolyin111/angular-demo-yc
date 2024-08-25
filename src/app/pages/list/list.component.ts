@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { map, of, tap } from 'rxjs';
+import { finalize, map, of, tap } from 'rxjs';
 import { StorageService } from '../../shared/storage.service';
 import { mockdate } from '../mockdata';
 import { Attraction, Favorite } from '../model';
@@ -20,6 +20,16 @@ export class ListComponent implements OnInit {
   dataList = signal<Attraction[]>([]);
 
   categoryIds = signal<string>('');
+
+  isLoading = signal<boolean>(false);
+
+  currentPage = signal<number>(1);
+  pageEffect = effect(
+    () => {
+      this.search(this.currentPage());
+    },
+    { allowSignalWrites: true }
+  );
 
   ngOnInit(): void {}
 
@@ -47,9 +57,8 @@ export class ListComponent implements OnInit {
     item.isFavorite = isToggleToFavorite;
   }
 
-  search() {
-    console.log(this.categoryIds());
-
+  search(page: number = 1) {
+    this.isLoading.set(true);
     of(mockdate)
       .pipe(
         map((data) => {
@@ -66,8 +75,18 @@ export class ListComponent implements OnInit {
                 : true,
           }));
         }),
-        tap((res) => this.dataList.set(res))
+        tap((res) => console.log('search res:', res)),
+        tap((res) => this.dataList.set(res)),
+        finalize(() => this.isLoading.set(false))
       )
       .subscribe();
+  }
+
+  prevPage() {
+    this.currentPage.set(this.currentPage() - 1);
+  }
+
+  nextPage() {
+    this.currentPage.set(this.currentPage() + 1);
   }
 }
