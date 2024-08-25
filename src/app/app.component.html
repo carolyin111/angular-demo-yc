@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<div class="container">
+  <header class="header">
+    <nav>
+      <ul>
+        <li><a routerLink="/data-list" routerLinkActive="active">資料列表</a></li>
+        <li><a routerLink="/favorites" routerLinkActive="active">我的最愛</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 My Angular Demo Project</p>
+  </footer>
+</div>
