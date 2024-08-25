@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Favorite } from '../pages/model';
+import { FavoriteTableProps } from './model';
 
 @Injectable({
   providedIn: 'root',
@@ -7,11 +7,11 @@ import { Favorite } from '../pages/model';
 export class StorageService {
   constructor() {}
 
-  setFavorite(data: Favorite[]) {
+  setFavorite(data: FavoriteTableProps[]) {
     localStorage.setItem('yc-favorite', JSON.stringify(data));
   }
 
-  getFavorite(): Favorite[] {
+  getFavorite(): FavoriteTableProps[] {
     return JSON.parse(localStorage.getItem('yc-favorite') || '[]');
   }
 }

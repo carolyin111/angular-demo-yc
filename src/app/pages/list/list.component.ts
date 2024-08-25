@@ -1,10 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { finalize, map, of, tap } from 'rxjs';
+import { finalize, map, tap } from 'rxjs';
+import {
+  FavoriteTableProps,
+  MainTableProps,
+  OpenAPIResponseModel,
+} from '../../shared/model';
 import { StorageService } from '../../shared/storage.service';
-import { mockdate } from '../mockdata';
-import { Attraction, Favorite } from '../model';
 
 @Component({
   selector: 'app-list',
@@ -17,26 +20,56 @@ export class ListComponent implements OnInit {
   private storageService = inject(StorageService);
   private httpClient = inject(HttpClient);
 
-  dataList = signal<Attraction[]>([]);
+  dataList = signal<MainTableProps[]>([]);
 
-  categoryIds = signal<string>('');
+  distict = signal<string>('');
+  progress = signal<string>('');
 
   isLoading = signal<boolean>(false);
 
   currentPage = signal<number>(1);
-  pageEffect = effect(
-    () => {
-      this.search(this.currentPage());
-    },
-    { allowSignalWrites: true }
-  );
+  // pageEffect = effect(
+  //   () => {
+  //    // TODO: 分頁
+  //   },
+  //   { allowSignalWrites: true }
+  // );
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isLoading.set(true);
 
-  toggleFavorite(item: Attraction) {
+    this.httpClient
+      .get<OpenAPIResponseModel[]>(`/api/BigData/project`, {
+        headers: new HttpHeaders({
+          Accept: 'application/json',
+        }),
+      })
+      .pipe(
+        map((res) => {
+          const favorite = this.storageService.getFavorite();
+          return res.map((item) => ({
+            ...item,
+            isFavorite:
+              favorite.findIndex(
+                (favItem: FavoriteTableProps) =>
+                  `${favItem.lng}${favItem.lat}` === `${item.lng}${item.lat}`
+              ) === -1
+                ? false
+                : true,
+          }));
+        }),
+        tap((res) => this.dataList.set(res)),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe();
+  }
+
+  toggleFavorite(item: MainTableProps) {
     const isToggleToFavorite = !item.isFavorite;
     const favorite = this.storageService.getFavorite();
-    const index = favorite.findIndex((f: Favorite) => f.id === item.id);
+    const index = favorite.findIndex(
+      (f: MainTableProps) => `${f.lng}${f.lat}` === `${item.lng}${item.lat}`
+    );
 
     if (isToggleToFavorite) {
       if (index === -1) {
@@ -57,29 +90,8 @@ export class ListComponent implements OnInit {
     item.isFavorite = isToggleToFavorite;
   }
 
-  search(page: number = 1) {
-    this.isLoading.set(true);
-    of(mockdate)
-      .pipe(
-        map((data) => {
-          const favorite = this.storageService.getFavorite();
-          return data.map((item) => ({
-            id: item.id,
-            name: item.name,
-            distric: item.distric,
-            open_time: item.open_time,
-            tel: item.tel,
-            isFavorite:
-              favorite.findIndex((item: Favorite) => item.id === item.id) === -1
-                ? false
-                : true,
-          }));
-        }),
-        tap((res) => console.log('search res:', res)),
-        tap((res) => this.dataList.set(res)),
-        finalize(() => this.isLoading.set(false))
-      )
-      .subscribe();
+  filter() {
+    // TODO: 過濾條件
   }
 
   prevPage() {

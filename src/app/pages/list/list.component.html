@@ -5,43 +5,52 @@
 }
 
 <div class="data-list-container">
-  <h1>景點資料列表</h1>
+  <h1>臺北市社會住宅興建工程進度</h1>
 
   <div class="form-wrapper">
-    <form>
+    <form class="search-form">
       <div class="form-field">
-        <label for="categoryIds">分類編號</label>
+        <label for="distict">行政區</label>
         <input
-          name="categoryIds"
+          name="distict"
           type="text"
-          [(ngModel)]="categoryIds"
-          placeholder="輸入多個請以逗號分隔。例如 12,34,124"
+          [(ngModel)]="distict"
+          placeholder=""
+        />
+      </div>
+      <div class="form-field">
+        <label for="progress">興建進度</label>
+        <input
+          name="progress"
+          type="text"
+          [(ngModel)]="progress"
+          placeholder=""
         />
       </div>
     </form>
-    <button class="yc-btn" (click)="search()">查詢</button>
+    <button class="yc-btn" (click)="filter()">查詢</button>
   </div>
 
   <div class="table-wrapper">
     <table class="data-list-table">
       <thead>
         <tr>
-          <th>編號</th>
           <th>行政區</th>
-          <th>景點名稱</th>
-          <th>電話</th>
-          <th>開放時間</th>
+          <th>社宅名稱</th>
+          <th>地址</th>
+          <th>規劃戶數</th>
+          <th>興建進度</th>
           <th>我的最愛</th>
         </tr>
       </thead>
       <tbody>
-        @for (item of dataList(); track item.id; let i = $index) {
+        @for (item of dataList(); track item; let i = $index) {
           <tr>
-            <td>{{ i }}</td>
-            <td>{{ item.distric }}</td>
+            <td>{{ item.distict }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.tel }}</td>
-            <td>{{ item.open_time }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.houseHolds }}</td>
+            <td>{{ item.progress }}</td>
             <td>
               <input
                 class="yc-checkbox"
