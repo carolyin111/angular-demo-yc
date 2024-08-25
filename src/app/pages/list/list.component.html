@@ -1,36 +1,38 @@
 <div class="data-list-container">
   <h1>景點資料列表</h1>
 
-  <table class="data-list-table">
-    <thead>
-      <tr>
-        <th>編號</th>
-        <th>行政區</th>
-        <th>景點名稱</th>
-        <th>電話</th>
-        <th>開放時間</th>
-        <th>是否加入最愛</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of dataList; track item.id) {
+  <div class="table-wrapper">
+    <table class="data-list-table">
+      <thead>
         <tr>
-          <td>{{ item.id }}</td>
-          <td>{{ item.distric }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.tel }}</td>
-          <td>{{ item.open_time }}</td>
-          <td>
-            <input
-              type="checkbox"
-              [checked]="item.isFavorite"
-              (change)="toggleFavorite(item)"
-            />
-          </td>
+          <th>編號</th>
+          <th>行政區</th>
+          <th>景點名稱</th>
+          <th>電話</th>
+          <th>開放時間</th>
+          <th>我的最愛</th>
         </tr>
-      } @empty {
-        <li>There are no items.</li>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (item of dataList(); track item.id) {
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.distric }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.tel }}</td>
+            <td>{{ item.open_time }}</td>
+            <td>
+              <input
+                type="checkbox"
+                [checked]="item.isFavorite"
+                (change)="toggleFavorite(item)"
+              />
+            </td>
+          </tr>
+        } @empty {
+          <div>There are no items.</div>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>

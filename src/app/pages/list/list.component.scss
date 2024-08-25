@@ -1,0 +1,64 @@
+.data-list-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .table-wrapper {
+    max-height: 400px; // 設定固定高度
+    overflow-y: auto; // 垂直方向啟用滾動條
+
+    .data-list-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      thead {
+        background-color: #f0f0f0;
+
+        th {
+          padding: 10px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+          font-weight: bold;
+        }
+      }
+
+      tbody {
+        tr {
+          &:nth-child(even) {
+            background-color: #f9f9f9;
+          }
+
+          td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+
+            &:nth-child(1) {
+              width: 8%;
+            }
+
+            &:nth-child(2) {
+              width: 10%;
+            }
+
+            &:nth-child(3) {
+              width: 20%;
+            }
+
+            &:nth-child(4) {
+              width: 20%;
+            }
+
+            &:nth-child(5) {
+              width: 30%;
+            }
+
+            &:nth-child(6) {
+              width: 13%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
