@@ -1,1 +1,53 @@
-<p>favorites works!</p>
+<div class="data-list-container">
+  <h1>我的最愛</h1>
+
+  <div class="table-wrapper">
+    <table class="data-list-table">
+      <thead>
+        <tr>
+          <th>行政區</th>
+          <th>社宅名稱</th>
+          <th>地址</th>
+          <th>規劃戶數</th>
+          <th>興建進度</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of paginatedData(); track item; let i = $index) {
+          <tr>
+            <td data-label="行政區">{{ item.distict }}</td>
+            <td data-label="社宅名稱">{{ item.name }}</td>
+            <td data-label="地址">{{ item.address }}</td>
+            <td data-label="規劃戶數">{{ item.houseHolds }}</td>
+            <td data-label="興建進度">{{ item.progress }}</td>
+            <td data-label="操作">
+              <div class="flex gap-3">
+                <button class="yc-btn" (click)="removeFavorite(item)">
+                  編輯
+                </button>
+                <button class="yc-btn" (click)="removeFavorite(item)">
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <div>There are no items.</div>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    @if (currentPage() > 1) {
+      <button (click)="prevPage()">上一頁</button>
+    }
+    <div class="page-info">
+      <span>第 {{ currentPage() }} 頁，共 {{ totalPages() }} 頁</span>
+    </div>
+    @if (currentPage() < totalPages()) {
+      <button (click)="nextPage()">下一頁</button>
+    }
+  </div>
+</div>
