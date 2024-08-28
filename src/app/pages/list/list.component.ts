@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { finalize, map, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import {
   FavoriteTableProps,
   MainTableProps,
@@ -28,15 +28,11 @@ export class ListComponent implements OnInit {
   private storageService = inject(StorageService);
   private httpClient = inject(HttpClient);
 
-  ProgressTypes = ProgressTypes;
-
   dataList = signal<MainTableProps[]>([]);
   filterData = signal<MainTableProps[]>([]);
 
+  ProgressTypes = ProgressTypes;
   progress = signal<string>('全部');
-
-  isLoading = signal<boolean>(false);
-
   progressEffect = effect(
     () => {
       this.filter();
@@ -60,8 +56,6 @@ export class ListComponent implements OnInit {
   //#endregion
 
   ngOnInit(): void {
-    this.isLoading.set(true);
-
     this.httpClient
       .get<OpenAPIResponseModel[]>(`/api/BigData/project`, {
         headers: new HttpHeaders({
@@ -82,8 +76,7 @@ export class ListComponent implements OnInit {
                 : true,
           }));
         }),
-        tap((res) => this.dataList.set(res)),
-        finalize(() => this.isLoading.set(false))
+        tap((res) => this.dataList.set(res))
       )
       .subscribe();
   }
