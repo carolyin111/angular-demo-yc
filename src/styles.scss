@@ -1,4 +1,31 @@
-/* 基本樣式重置 */
+/* 變量 */
+$primary-color: #333;
+$background-color: #f5f5f5;
+$border-color: #ddd;
+
+/* 混合器 */
+@mixin flex($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin button-style {
+  background-color: $primary-color;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: lighten($primary-color, 10%);
+  }
+  &:focus-visible {
+    outline: $primary-color auto 1px;
+  }
+}
+
+/* 重置和基礎樣式 */
 * {
   margin: 0;
   padding: 0;
@@ -8,20 +35,18 @@
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  color: #333;
-  background-color: #f5f5f5;
+  color: $primary-color;
+  background-color: $background-color;
   margin: 0;
   padding: 0;
 }
 
-/* 超連結的基本樣式 */
 a {
   color: #007bff;
   text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 /* 標題樣式 */
@@ -59,51 +84,43 @@ h6 {
   font-size: 0.875rem;
 }
 
+/* 通用類 */
 .flex {
-  display: flex;
+  @include flex;
 }
-
 .flex-col {
-  flex-direction: column;
+  @include flex(column);
 }
-
 .flex-row {
-  flex-direction: row;
+  @include flex(row);
 }
-
 .gap-3 {
   gap: 3px;
 }
 
+/* 容器樣式 */
 .container {
-  display: flex;
-  flex-direction: column;
+  @include flex(column);
   min-height: 100vh;
 }
 
 .header {
-  background-color: #333;
+  background-color: $primary-color;
   color: #fff;
   padding: 10px;
 
   nav ul {
+    @include flex;
     list-style: none;
-    display: flex;
     gap: 10px;
-  }
 
-  nav ul li {
-    display: inline;
-  }
-
-  nav ul li a {
-    color: #fff;
-    text-decoration: none;
-  }
-
-  nav ul li a.active {
-    font-weight: bold;
-    text-decoration: underline;
+    li a {
+      color: #fff;
+      &.active {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
   }
 }
 
@@ -113,7 +130,7 @@ h6 {
 }
 
 .footer {
-  background-color: #333;
+  background-color: $primary-color;
   color: #fff;
   text-align: center;
   padding: 10px;
@@ -287,22 +304,10 @@ h6 {
   }
 }
 
+/* 按鈕樣式 */
 .yc-btn,
 .yc-small-btn {
-  display: block;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  align-self: flex-end;
-  &:hover {
-    background-color: #555;
-    color: #fff;
-  }
-  &:focus-visible {
-    outline: #555 auto 1px;
-  }
+  @include button-style;
 }
 
 .yc-btn {
@@ -349,4 +354,47 @@ h6 {
   &:focus {
     box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+
+  input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    &:focus {
+      border-color: #333;
+    }
+    &:focus-visible {
+      outline: #555 auto 1px;
+    }
+  }
+}
+
+.modal-body {
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  @include flex(row, center);
+  gap: 10px;
 }
