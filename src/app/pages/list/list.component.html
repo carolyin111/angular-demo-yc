@@ -35,12 +35,12 @@
       <tbody>
         @for (item of paginatedData(); track item; let i = $index) {
           <tr>
-            <td>{{ item.distict }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.address }}</td>
-            <td>{{ item.houseHolds }}</td>
-            <td>{{ item.progress }}</td>
-            <td>
+            <td data-label="行政區">{{ item.distict }}</td>
+            <td data-label="社宅名稱">{{ item.name }}</td>
+            <td data-label="地址">{{ item.address }}</td>
+            <td data-label="規劃戶數">{{ item.houseHolds }}</td>
+            <td data-label="興建進度">{{ item.progress }}</td>
+            <td data-label="我的最愛">
               <input
                 class="yc-checkbox"
                 type="checkbox"

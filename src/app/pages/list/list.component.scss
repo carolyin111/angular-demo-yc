@@ -63,6 +63,51 @@
           }
         }
       }
+
+      @media (max-width: 959px) {
+        thead {
+          display: none; // 隱藏表頭
+        }
+
+        tbody {
+          tr {
+            display: block;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+
+            td {
+              display: block;
+              padding: 5px 10px;
+              border: none;
+              text-align: left;
+              position: relative;
+              padding-left: 50%;
+
+              &:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                text-align: left;
+                font-weight: bold;
+              }
+
+              // 重置寬度設置
+              &:nth-child(1),
+              &:nth-child(2),
+              &:nth-child(3),
+              &:nth-child(4),
+              &:nth-child(5),
+              &:nth-child(6) {
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
