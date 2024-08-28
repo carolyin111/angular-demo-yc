@@ -9,15 +9,6 @@
 
   <div class="form-wrapper">
     <form class="search-form">
-      <!-- <div class="form-field">
-        <label for="distict">行政區</label>
-        <input
-          name="distict"
-          type="text"
-          [(ngModel)]="distict"
-          placeholder=""
-        />
-      </div> -->
       <div class="form-field">
         <label for="progress">興建進度</label>
         <select name="progress" [(ngModel)]="progress">
@@ -27,7 +18,6 @@
         </select>
       </div>
     </form>
-    <!-- <button class="yc-btn" (click)="filter()">查詢</button> -->
   </div>
 
   <div class="table-wrapper">
@@ -43,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of filterData(); track item; let i = $index) {
+        @for (item of paginatedData(); track item; let i = $index) {
           <tr>
             <td>{{ item.distict }}</td>
             <td>{{ item.name }}</td>
@@ -67,10 +57,14 @@
   </div>
 
   <div class="pagination">
-    <button (click)="prevPage()">上一頁</button>
+    @if (currentPage() > 1) {
+      <button (click)="prevPage()">上一頁</button>
+    }
     <div class="page-info">
-      <span>第 {{ currentPage() }} 頁</span>
+      <span>第 {{ currentPage() }} 頁，共 {{ totalPages() }} 頁</span>
     </div>
-    <button (click)="nextPage()">下一頁</button>
+    @if (currentPage() < totalPages()) {
+      <button (click)="nextPage()">下一頁</button>
+    }
   </div>
 </div>

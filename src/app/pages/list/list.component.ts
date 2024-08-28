@@ -1,5 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize, map, tap } from 'rxjs';
 import {
@@ -30,20 +37,27 @@ export class ListComponent implements OnInit {
 
   isLoading = signal<boolean>(false);
 
-  currentPage = signal<number>(1);
-  // pageEffect = effect(
-  //   () => {
-  //    // TODO: 分頁
-  //   },
-  //   { allowSignalWrites: true }
-  // );
-
   progressEffect = effect(
     () => {
       this.filter();
     },
     { allowSignalWrites: true }
   );
+
+  //#region 分頁
+  itemsPerPage = signal<number>(10); // 每頁顯示的項目數
+  currentPage = signal<number>(1);
+
+  totalPages = computed(() =>
+    Math.ceil(this.filterData().length / this.itemsPerPage())
+  );
+
+  paginatedData = computed(() => {
+    const startIndex = (this.currentPage() - 1) * this.itemsPerPage();
+    const endIndex = startIndex + this.itemsPerPage();
+    return this.filterData().slice(startIndex, endIndex);
+  });
+  //#endregion
 
   ngOnInit(): void {
     this.isLoading.set(true);
@@ -102,18 +116,22 @@ export class ListComponent implements OnInit {
 
   filter() {
     const progress = this.progress();
-
     const filterData = this.dataList().filter((item) => {
       return progress === '全部' || item.progress === progress;
     });
     this.filterData.set(filterData);
+    this.currentPage.set(1); // 重置到第一頁
   }
 
   prevPage() {
-    this.currentPage.set(this.currentPage() - 1);
+    if (this.currentPage() > 1) {
+      this.currentPage.update((page) => page - 1);
+    }
   }
 
   nextPage() {
-    this.currentPage.set(this.currentPage() + 1);
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update((page) => page + 1);
+    }
   }
 }
