@@ -287,10 +287,9 @@ h6 {
   }
 }
 
-.yc-btn {
+.yc-btn,
+.yc-small-btn {
   display: block;
-  width: 40px;
-  padding: 5px;
   background-color: #333;
   color: #fff;
   border: none;
@@ -304,6 +303,16 @@ h6 {
   &:focus-visible {
     outline: #555 auto 1px;
   }
+}
+
+.yc-btn {
+  width: 60px;
+  padding: 10px;
+}
+
+.yc-small-btn {
+  width: 40px;
+  padding: 5px;
 }
 
 .yc-checkbox {

@@ -10,6 +10,7 @@
           <th>地址</th>
           <th>規劃戶數</th>
           <th>興建進度</th>
+          <th>我的備註</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -21,12 +22,13 @@
             <td data-label="地址">{{ item.address }}</td>
             <td data-label="規劃戶數">{{ item.houseHolds }}</td>
             <td data-label="興建進度">{{ item.progress }}</td>
+            <td data-label="我的備註">{{ item.memo }}</td>
             <td data-label="操作">
               <div class="flex gap-3">
-                <button class="yc-btn" (click)="removeFavorite(item)">
+                <button class="yc-small-btn" (click)="editFavorite(item)">
                   編輯
                 </button>
-                <button class="yc-btn" (click)="removeFavorite(item)">
+                <button class="yc-small-btn" (click)="removeFavorite(item)">
                   刪除
                 </button>
               </div>
@@ -51,3 +53,30 @@
     }
   </div>
 </div>
+
+<ng-template #editModal>
+  @if (editingItem()) {
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <h3>編輯我的最愛</h3>
+        <div class="modal-body">
+          <p><strong>行政區：</strong> {{ editingItem()?.distict }}</p>
+          <p><strong>社宅名稱：</strong> {{ editingItem()?.name }}</p>
+          <p><strong>地址：</strong> {{ editingItem()?.address }}</p>
+          <p><strong>規劃戶數：</strong> {{ editingItem()?.houseHolds }}</p>
+          <p><strong>興建進度：</strong> {{ editingItem()?.progress }}</p>
+          <div>
+            <label for="memo"><strong>我的備註：</strong></label>
+            <input id="memo" [(ngModel)]="editingMemo" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="yc-btn" (click)="saveEdit()">儲存</button>
+          <button class="yc-btn" (click)="closeModal()">取消</button>
+        </div>
+      </div>
+    </div>
+  }
+</ng-template>
+
+<ng-container *ngTemplateOutlet="editModal"></ng-container>
