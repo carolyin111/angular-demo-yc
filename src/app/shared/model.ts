@@ -30,3 +30,12 @@ export type MainTableProps = Pick<
 export interface FavoriteTableProps extends MainTableProps {
   memo: string;
 }
+
+export const ProgressTypes = [
+  '全部',
+  '已完工',
+  '施工中及待開工',
+  '招標中及待上網',
+  '規劃中',
+  '都更聯開分回',
+];

@@ -9,7 +9,7 @@
 
   <div class="form-wrapper">
     <form class="search-form">
-      <div class="form-field">
+      <!-- <div class="form-field">
         <label for="distict">行政區</label>
         <input
           name="distict"
@@ -17,18 +17,17 @@
           [(ngModel)]="distict"
           placeholder=""
         />
-      </div>
+      </div> -->
       <div class="form-field">
         <label for="progress">興建進度</label>
-        <input
-          name="progress"
-          type="text"
-          [(ngModel)]="progress"
-          placeholder=""
-        />
+        <select name="progress" [(ngModel)]="progress">
+          @for (progress of ProgressTypes; track progress) {
+            <option [value]="progress">{{ progress }}</option>
+          }
+        </select>
       </div>
     </form>
-    <button class="yc-btn" (click)="filter()">查詢</button>
+    <!-- <button class="yc-btn" (click)="filter()">查詢</button> -->
   </div>
 
   <div class="table-wrapper">
@@ -44,7 +43,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of dataList(); track item; let i = $index) {
+        @for (item of filterData(); track item; let i = $index) {
           <tr>
             <td>{{ item.distict }}</td>
             <td>{{ item.name }}</td>

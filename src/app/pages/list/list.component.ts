@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize, map, tap } from 'rxjs';
 import {
   FavoriteTableProps,
   MainTableProps,
   OpenAPIResponseModel,
+  ProgressTypes,
 } from '../../shared/model';
 import { StorageService } from '../../shared/storage.service';
 
@@ -20,10 +21,12 @@ export class ListComponent implements OnInit {
   private storageService = inject(StorageService);
   private httpClient = inject(HttpClient);
 
-  dataList = signal<MainTableProps[]>([]);
+  ProgressTypes = ProgressTypes;
 
-  distict = signal<string>('');
-  progress = signal<string>('');
+  dataList = signal<MainTableProps[]>([]);
+  filterData = signal<MainTableProps[]>([]);
+
+  progress = signal<string>('全部');
 
   isLoading = signal<boolean>(false);
 
@@ -34,6 +37,13 @@ export class ListComponent implements OnInit {
   //   },
   //   { allowSignalWrites: true }
   // );
+
+  progressEffect = effect(
+    () => {
+      this.filter();
+    },
+    { allowSignalWrites: true }
+  );
 
   ngOnInit(): void {
     this.isLoading.set(true);
@@ -91,7 +101,12 @@ export class ListComponent implements OnInit {
   }
 
   filter() {
-    // TODO: 過濾條件
+    const progress = this.progress();
+
+    const filterData = this.dataList().filter((item) => {
+      return progress === '全部' || item.progress === progress;
+    });
+    this.filterData.set(filterData);
   }
 
   prevPage() {

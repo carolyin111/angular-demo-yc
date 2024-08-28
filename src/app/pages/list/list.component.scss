@@ -98,34 +98,24 @@
   gap: 10px;
   margin-bottom: 20px;
 
-  .search-form {
-    // 用 grid 布局
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-
-    // 要rwd
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
   .form-field {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
-    input {
+    select {
       display: block;
       width: 300px;
       padding: 10px;
       border: 2px solid #ddd;
       border-radius: 4px;
+      -webkit-appearance: none; /* 清除select預設的下拉ICON */
+      -moz-appearance: none; /* 清除select預設的下拉ICON */
       &:focus {
         border-color: #333;
       }
       &:focus-visible {
-        outline: #333 auto 1px;
+        outline: #555 auto 1px;
       }
     }
   }
